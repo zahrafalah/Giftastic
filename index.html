@@ -10,11 +10,11 @@
 <body>
 
     <script type="text/javascript">
-    var Singers = ["Tyler Swift","Elvis Presley","Michael Jackson","Adele","Justin Timberlake"];
+    var singers = ["Tyler Swift","Elvis Presley","Michael Jackson","Adele","Justin Timberlake"];
 
-    function displayMovieInfo() {
-        var singer = $(this).attr("data-name");
-        var queryUrl ="https://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
+    function displayInfo() {
+        var celebrities = $(this).attr("data-name");
+        var queryUrl ="http://api.giphy.com/v1/giphs/search?q=" + celebrity + "&api-key=vC94xlaeCQ6VeKHy5v0mtGsyFroqqmjA";
         
         $.ajax({
             url: queryUrl,

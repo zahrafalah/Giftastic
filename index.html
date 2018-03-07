@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Giftastic</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+
+    <script type="text/javascript">
+    var Singers = ["Tyler Swift","Elvis Presley","Michael Jackson","Adele","Justin Timberlake"];
+
+    function displayMovieInfo() {
+        var singer = $(this).attr("data-name");
+        var queryUrl ="https://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
+        
+        $.ajax({
+            url: queryUrl,
+            method: "GET"
+        }).done(function(response){
+             console.log(response);
+
+            var movieDiv = $("<div class='movie'>");
+            var rating = response.Rated;
+            var p = $("<p>").text("Rating: " + rating);
+            movieDiv.append(p);
+
+            var giphs = response.giphs;
+            var ptwo = $
+            
+        })
+
+
+
+
+
+    }
+
+
+    </script>
+    
+</body>
+</html>

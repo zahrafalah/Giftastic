@@ -8,13 +8,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
+    <div class="container">
+        <h1>Celebrity Giphy Search</h1>
+        <div id="buttons-view"></div>
+        <div id="giphs-view"></div>
+        <form id="celebrity-form">
+                <label for="celeb-input">Search</label>
+                <input type="text" id="celeb-input">
+                <br>
+                <input id="add-name" type="submit" value="Submit">
+        </form>
+
+
 
     <script type="text/javascript">
-    var singers = ["Tyler Swift","Elvis Presley","Michael Jackson","Adele","Justin Timberlake"];
+
+    var celebrities = ["Tyler Swift","Elvis Presley","Michael Jackson","Adele","Justin Timberlake"];
 
     function displayInfo() {
-        var celebrities = $(this).attr("data-name");
-        var queryUrl ="http://api.giphy.com/v1/giphs/search?q=" + celebrity + "&api-key=vC94xlaeCQ6VeKHy5v0mtGsyFroqqmjA";
+        var celebrity = $(this).attr("data-name");
+        var queryUrl ="http://api.giphy.com/v1/giphs/search?q=" + celebrity + "&api-key=vC94xlaeCQ6VeKHy5v0mtGsyFroqqmjA&limit=10";
         
         $.ajax({
             url: queryUrl,
@@ -31,15 +44,32 @@
             var ptwo = $
             
         })
-
-
-
-
-
     }
+    function renderButtons() {
+        $("#buttons-view").empty();
+        for (var i = 0; i < celebrities.length; i++) {
+            var a = $("<button>");  
+            a.addClass("celeb-btn");
+            a.attr("data-name", celebrities[i]);
+            a.text(celebrities[i]);
+            $("#buttons-view").append(a);
+        }
+    }
+
+    $("#add-name").on("click", function(event) {
+       event.preventDefault();
+       var celebrities = $("#celeb-input").val().trim();
+       celebrities.push(celebrity);
+       renderButtons();
+
+    });
+    
+    $(document).on("click",".celeb-btn", displayInfo);
+
+    renderButtons(); 
 
 
     </script>
-    
+    </div>
 </body>
 </html>

@@ -6,9 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Giftastic</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style type="text/css">
+        button,
+        div,
+        form,
+        input {
+          margin: 10px;
+        }
+        #giphs-view {
+            display: inline-block;
+            /* text-align: center; */
+        }
+      </style>
 </head>
 <body>
     <div class="container">
+
         <h1>Celebrity Giphy Search</h1>
         <div id="buttons-view"></div>
         <div id="giphs-view"></div>
@@ -22,35 +35,66 @@
 
 
     <script type="text/javascript">
+    var celebrity;
+    var celebrities = ["Taylor Swift","Elvis Presley","Michael Jackson","Adele","Justin Timberlake"];
 
-    var celebrities = ["Tyler Swift","Elvis Presley","Michael Jackson","Adele","Justin Timberlake"];
+    
+            // var myArr = ["Taylor Swift", "Justin Timberlake"];
+    var myNewArr = [];
+
+    function removeSpace(){
+
+        for (i = 0; i < celebrities.length; i++) {
+
+            // document.getElementById("demo").innerHTML = celebrities;
+
+            var empSpace = celebrities[i].substring(0, celebrities[i].indexOf(" "));
+
+            var replaceTxt = empSpace.replace(empSpace, empSpace + "+");
+
+            var celebrityItem = replaceTxt + celebrities[i].substring(celebrities[i].indexOf(" ") + 1, celebrities[i].length);
+
+            myNewArr[i] = celebrityItem;
+
+        }
+    }
+
+// document.getElementById("demo").innerHTML = myNewArr;
 
     function displayInfo() {
         var celebrity = $(this).attr("data-name");
-        var queryUrl ="http://api.giphy.com/v1/giphs/search?q=" + celebrity + "&api-key=vC94xlaeCQ6VeKHy5v0mtGsyFroqqmjA&limit=10";
+        var queryUrl = 'https://api.giphy.com/v1/gifs/search?api_key=vC94xlaeCQ6VeKHy5v0mtGsyFroqqmjA&q='+celebrity+'&limit=10&lang=en'
+        // var queryUrl ="https://api.giphy.com/v1/gifs/search?q=" +celebrity+ "&api_key=vC94xlaeCQ6VeKHy5v0mtGsyFroqqmjA&limit=10";
         
         $.ajax({
             url: queryUrl,
             method: "GET"
         }).done(function(response){
-             console.log(response);
+            console.log(queryUrl);
+            console.log(response);
+            console.log(response.data[0].rating);
+            for ( i = 0 ; i < response.data.length ; i++ ) {
+                $("#giphs-view").prepend("<p> Rating: " + response.data[i].rating + "</p>")
+                $("#giphs-view").prepend("<img src='" + response.data[i].images.downsized.url +"'</img>")
+            }
 
-            var movieDiv = $("<div class='movie'>");
-            var rating = response.Rated;
-            var p = $("<p>").text("Rating: " + rating);
-            movieDiv.append(p);
 
-            var giphs = response.giphs;
-            var ptwo = $
+            // var movieDiv = $("<div class='movie'>");
+            // var rate = response.data.rating;
+            // var pOne = $("<p>").text("Rating: " + rate);
+            // movieDiv.append(pOne);
+
+            // var giphs = response.data.images;
+            // $("#giphs-view").append(giphs);
             
         })
     }
     function renderButtons() {
         $("#buttons-view").empty();
-        for (var i = 0; i < celebrities.length; i++) {
+        for (var i = 0; i < myNewArr.length; i++) {
             var a = $("<button>");  
             a.addClass("celeb-btn");
-            a.attr("data-name", celebrities[i]);
+            a.attr("data-name", myNewArr[i]);
             a.text(celebrities[i]);
             $("#buttons-view").append(a);
         }
@@ -58,16 +102,16 @@
 
     $("#add-name").on("click", function(event) {
        event.preventDefault();
-       var celebrities = $("#celeb-input").val().trim();
-       celebrities.push(celebrity);
+       var name = $("#celeb-input").val().trim();
+       celebrities.push(name);
        renderButtons();
-
+       removeSpace();
     });
     
     $(document).on("click",".celeb-btn", displayInfo);
 
+    removeSpace();
     renderButtons(); 
-
 
     </script>
     </div>

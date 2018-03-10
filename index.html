@@ -14,8 +14,18 @@
           margin: 10px;
         }
         #giphs-view {
-            display: inline-block;
+            float: left;
+            /* display: inline-block; */
             /* text-align: center; */
+        }
+        .container {
+            margin: 0 auto;
+        }
+        h1 { 
+            text-align: center;
+            background-color: aqua;
+            font-style: italic;
+            color: blueviolet;
         }
       </style>
 </head>
@@ -72,23 +82,44 @@
         }).done(function(response){
             console.log(queryUrl);
             console.log(response);
-            console.log(response.data[0].rating);
+            // console.log(response.data[i].images.fixed_height.url);
             for ( i = 0 ; i < response.data.length ; i++ ) {
-                $("#giphs-view").prepend("<p> Rating: " + response.data[i].rating + "</p>")
-                $("#giphs-view").prepend("<img src='" + response.data[i].images.downsized.url +"'</img>")
+                $("#giphs-view").prepend("<p> Rating: " + response.data[i].rating + "</p>");
+                // $("#giphs-view").prepend("<img src='" + response.data[i].images.fixed_height_still.url + "'</img>")
+                // $("#giphs-view").prepend($(response.data[i].images.fixed_height_still.url).attr("data-still") ,$(response.data[i].images.fixed_height.url).attr("data-animate"),$(response.data[i].images.fixed_height_still.url).attr("data-state"));
+                $("#giphs-view").prepend("<img src='" + response.data[i].images.fixed_height_still.url +"'</img>", "<img data-still='" + response.data[i].images.fixed_height_still.url + "'></img>", "<img data-animate='" + response.data[i].images.fixed_height.url + "'></img>", "<img data-state='" + response.data[i].images.fixed_height_still.url +"'></img>")
+                
             }
 
-
+            // + response.data[i].images.fixed_height.url
             // var movieDiv = $("<div class='movie'>");
             // var rate = response.data.rating;
             // var pOne = $("<p>").text("Rating: " + rate);
             // movieDiv.append(pOne);
-
+            
             // var giphs = response.data.images;
             // $("#giphs-view").append(giphs);
             
         })
     }
+    $(".gif").on("click", function() {
+
+        var state = $(this).attr("data-state");
+        console.log("hi");
+    //   var state = $(this).attr(still,"<img src=" + response.data[i].images.fixed_height_still.url + "</img>");
+    //        console.log(state);
+    //   var animate = $(this).attr(animate, )
+
+
+      if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+      } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }
+    });
+
     function renderButtons() {
         $("#buttons-view").empty();
         for (var i = 0; i < myNewArr.length; i++) {

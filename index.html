@@ -1,164 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Giftastic</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <style type="text/css">
-        button,
-        div,
-        form,
-        input {
-          margin: 10px;
-        }
-        #giphs-view {
-            float: left;
-        }
-        .inline {
-            display: inline-block;
-            border: 2px solid;
-            border-color: white;
-        }
-        #button-views,
-        form {
-            margin: 0 auto;
-        }
-        body{
-            font-size: 18px;
-            font-style: italic;
-            color: aliceblue;
-            background-image: url(./assets/images/bg1.jpg);  
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-        
-        .container {
-            margin: 0 auto;
-        }
-        h1 { 
-            text-align: center;
-            font-size: bold;
-            font-style: italic;
-            color: white;
-        }
-        p {
-            text-align: center;
-        }
-      </style>
-</head>
-<body>
-    <div class="container">
 
-        <h1>Celebrity Giphy Search</h1>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Giftastic</title>
+        <link rel="stylesheet" href="./assets/css/reset.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="./assets/css/style.css"/>
+    </head>
 
-        <div id="buttons-view">
-            <button class="celeb-btn" type="button" class="btn btn-outline-success"></button>
-        </div>
+    <body>
+        <div class="container">
 
-        <form class="form-inline" id="celebrity-form">
-            <input id="celeb-input" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button id="add-name" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+            <h1>Celebrity Giphy Search</h1>
 
-        <div id="giphs-view"></div>
-       
+            <div id="buttons-view">
+                <button class="celeb-btn" type="button" class="btn btn-outline-success"></button>
+            </div>
 
+            <form class="form-inline" id="celebrity-form">
+                <input id="celeb-input" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button id="add-name" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
 
-
-    <script type="text/javascript">
-    var celebrity;
-    var celebrities = ["Taylor Swift","Elvis Presley","Michael Jackson","Adele","Justin Timberlake"];
-    var myNewArr = [];
-
-    function removeSpace(){
-
-        for (i = 0; i < celebrities.length; i++) {
-
-            var empSpace = celebrities[i].substring(0, celebrities[i].indexOf(" "));
-
-            var replaceTxt = empSpace.replace(empSpace, empSpace + "+");
-
-            var celebrityItem = replaceTxt + celebrities[i].substring(celebrities[i].indexOf(" ") + 1, celebrities[i].length);
-
-            myNewArr[i] = celebrityItem;
-
-        }
-    }
-
-    function displayInfo() {
-
-        var celebrity = $(this).attr("data-name");
-        var queryUrl = 'https://api.giphy.com/v1/gifs/search?api_key=vC94xlaeCQ6VeKHy5v0mtGsyFroqqmjA&q='+celebrity+'&limit=10&lang=en'
-    
-        
-        $("#giphs-view").empty();
-
-        $.ajax({
-            url: queryUrl,
-            method: "GET"
-        }).done(function(response){
+            <div id="giphs-view"></div>
             
-            console.log(queryUrl);
-            console.log(response);
-        
-            for ( i = 0 ; i < response.data.length ; i++ ) {
-                var newDiv = $('<div class="inline">')
-                var newP = $("<p> Rating: " + response.data[i].rating + "</p>");
-                var image = $(`<img src='' data-still='' data-animate='' data-state='' class='gif'> `);
-                image.attr("src",response.data[i].images.fixed_height_still.url);
-                image.attr("data-still",response.data[i].images.fixed_height_still.url);
-                image.attr("data-animate",response.data[i].images.fixed_height.url);
-                image.attr("data-state","still");
 
-                newDiv.append(newP);
-                newDiv.append(image);
-                $("#giphs-view").append(newDiv);
-            }
-        })
-    }
+            <script type="text/javascript" src="./assets/logic/logic.js"></script>
+        </div>
+    </body>
 
-    $(document).on("click", ".gif", function() {
-        console.log("hi");
-        var state = $(this).attr("data-state");
-        if (state === "still") {
-            $(this).attr("src", $(this).attr("data-animate"));
-            $(this).attr("data-state", "animate");
-        } else {
-          $(this).attr("src", $(this).attr("data-still"));
-          $(this).attr("data-state", "still");
-        }
-    })
-
-    function renderButtons() {
-        $("#buttons-view").empty();
-        for (var i = 0; i < myNewArr.length; i++) {
-            var a = $("<button>");  
-            a.addClass("celeb-btn");
-            a.attr("data-name", myNewArr[i]);
-            a.text(celebrities[i]);
-            $("#buttons-view").append(a);
-        }
-    }
-
-    $("#add-name").on("click", function(event) {
-       event.preventDefault();
-       var name = $("#celeb-input").val().trim();
-       celebrities.push(name);
-       $("#celeb-input").val('');
-       removeSpace(); 
-       renderButtons();
-       
-    });
-    
-    $(document).on("click",".celeb-btn", displayInfo);
-
-    removeSpace();
-    renderButtons(); 
-
-    </script>
-    </div>
-</body>
 </html>

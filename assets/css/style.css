@@ -1,0 +1,45 @@
+button,
+div,
+form,
+input {
+  margin: 10px;
+}
+
+#giphs-view {
+    float: left;
+}
+
+.inline {
+    display: inline-block;
+    border: 2px solid;
+    border-color: white;
+}
+
+#button-views,
+form {
+    margin: 0 auto;
+}
+
+body {
+    font-size: 18px;
+    font-style: italic;
+    color: aliceblue;
+    background-image: url(../images/bg1.jpg);  
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container {
+    margin: 0 auto;
+}
+
+h1 { 
+    text-align: center;
+    font-size: bold;
+    font-style: italic;
+    color: white;
+}
+
+p {
+    text-align: center;
+}

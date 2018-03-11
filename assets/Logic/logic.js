@@ -1,4 +1,4 @@
-
+$(document).ready(function() {
 var celebrity;
 var celebrities = ["Taylor Swift","Elvis Presley","Michael Jackson","Hugh Laurie","Sherlock","Trump","Trevor Noah","Jim Parson"];
 var myNewArr = [];
@@ -87,3 +87,4 @@ $(document).on("click",".celeb-btn", displayInfo);
 
 removeSpace();
 renderButtons(); 
+})

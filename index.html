@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Giftastic</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <style type="text/css">
         button,
@@ -15,17 +16,36 @@
         }
         #giphs-view {
             float: left;
-            /* display: inline-block; */
-            /* text-align: center; */
         }
+        .inline {
+            display: inline-block;
+            border: 2px solid;
+            border-color: white;
+        }
+        #button-views,
+        form {
+            margin: 0 auto;
+        }
+        body{
+            font-size: 18px;
+            font-style: italic;
+            color: aliceblue;
+            background-image: url(./assets/images/bg1.jpg);  
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
         .container {
             margin: 0 auto;
         }
         h1 { 
             text-align: center;
-            background-color: aqua;
+            font-size: bold;
             font-style: italic;
-            color: blueviolet;
+            color: white;
+        }
+        p {
+            text-align: center;
         }
       </style>
 </head>
@@ -33,30 +53,29 @@
     <div class="container">
 
         <h1>Celebrity Giphy Search</h1>
-        <div id="buttons-view"></div>
-        <div id="giphs-view"></div>
-        <form id="celebrity-form">
-                <label for="celeb-input">Search</label>
-                <input type="text" id="celeb-input">
-                <br>
-                <input id="add-name" type="submit" value="Submit">
+
+        <div id="buttons-view">
+            <button class="celeb-btn" type="button" class="btn btn-outline-success"></button>
+        </div>
+
+        <form class="form-inline" id="celebrity-form">
+            <input id="celeb-input" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button id="add-name" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
+
+        <div id="giphs-view"></div>
+       
 
 
 
     <script type="text/javascript">
     var celebrity;
     var celebrities = ["Taylor Swift","Elvis Presley","Michael Jackson","Adele","Justin Timberlake"];
-
-    
-            // var myArr = ["Taylor Swift", "Justin Timberlake"];
     var myNewArr = [];
 
     function removeSpace(){
 
         for (i = 0; i < celebrities.length; i++) {
-
-            // document.getElementById("demo").innerHTML = celebrities;
 
             var empSpace = celebrities[i].substring(0, celebrities[i].indexOf(" "));
 
@@ -69,56 +88,49 @@
         }
     }
 
-// document.getElementById("demo").innerHTML = myNewArr;
-
     function displayInfo() {
+
         var celebrity = $(this).attr("data-name");
         var queryUrl = 'https://api.giphy.com/v1/gifs/search?api_key=vC94xlaeCQ6VeKHy5v0mtGsyFroqqmjA&q='+celebrity+'&limit=10&lang=en'
-        // var queryUrl ="https://api.giphy.com/v1/gifs/search?q=" +celebrity+ "&api_key=vC94xlaeCQ6VeKHy5v0mtGsyFroqqmjA&limit=10";
+    
         
+        $("#giphs-view").empty();
+
         $.ajax({
             url: queryUrl,
             method: "GET"
         }).done(function(response){
+            
             console.log(queryUrl);
             console.log(response);
-            // console.log(response.data[i].images.fixed_height.url);
+        
             for ( i = 0 ; i < response.data.length ; i++ ) {
-                $("#giphs-view").prepend("<p> Rating: " + response.data[i].rating + "</p>");
-                // $("#giphs-view").prepend("<img src='" + response.data[i].images.fixed_height_still.url + "'</img>")
-                // $("#giphs-view").prepend($(response.data[i].images.fixed_height_still.url).attr("data-still") ,$(response.data[i].images.fixed_height.url).attr("data-animate"),$(response.data[i].images.fixed_height_still.url).attr("data-state"));
-                $("#giphs-view").prepend("<img src='" + response.data[i].images.fixed_height_still.url +"'</img>", "<img data-still='" + response.data[i].images.fixed_height_still.url + "'></img>", "<img data-animate='" + response.data[i].images.fixed_height.url + "'></img>", "<img data-state='" + response.data[i].images.fixed_height_still.url +"'></img>")
-                
-            }
+                var newDiv = $('<div class="inline">')
+                var newP = $("<p> Rating: " + response.data[i].rating + "</p>");
+                var image = $(`<img src='' data-still='' data-animate='' data-state='' class='gif'> `);
+                image.attr("src",response.data[i].images.fixed_height_still.url);
+                image.attr("data-still",response.data[i].images.fixed_height_still.url);
+                image.attr("data-animate",response.data[i].images.fixed_height.url);
+                image.attr("data-state","still");
 
-            // + response.data[i].images.fixed_height.url
-            // var movieDiv = $("<div class='movie'>");
-            // var rate = response.data.rating;
-            // var pOne = $("<p>").text("Rating: " + rate);
-            // movieDiv.append(pOne);
-            
-            // var giphs = response.data.images;
-            // $("#giphs-view").append(giphs);
-            
+                newDiv.append(newP);
+                newDiv.append(image);
+                $("#giphs-view").append(newDiv);
+            }
         })
     }
-    $(".gif").on("click", function() {
 
-        var state = $(this).attr("data-state");
+    $(document).on("click", ".gif", function() {
         console.log("hi");
-    //   var state = $(this).attr(still,"<img src=" + response.data[i].images.fixed_height_still.url + "</img>");
-    //        console.log(state);
-    //   var animate = $(this).attr(animate, )
-
-
-      if (state === "still") {
-        $(this).attr("src", $(this).attr("data-animate"));
-        $(this).attr("data-state", "animate");
-      } else {
-        $(this).attr("src", $(this).attr("data-still"));
-        $(this).attr("data-state", "still");
-      }
-    });
+        var state = $(this).attr("data-state");
+        if (state === "still") {
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+        } else {
+          $(this).attr("src", $(this).attr("data-still"));
+          $(this).attr("data-state", "still");
+        }
+    })
 
     function renderButtons() {
         $("#buttons-view").empty();
@@ -135,8 +147,10 @@
        event.preventDefault();
        var name = $("#celeb-input").val().trim();
        celebrities.push(name);
+       $("#celeb-input").val('');
+       removeSpace(); 
        renderButtons();
-       removeSpace();
+       
     });
     
     $(document).on("click",".celeb-btn", displayInfo);

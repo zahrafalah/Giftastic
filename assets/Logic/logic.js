@@ -65,7 +65,7 @@ $(document).on("click", ".gif", function() {
 function renderButtons() {
     $("#buttons-view").empty();
     for (var i = 0; i < myNewArr.length; i++) {
-        var a = $("<button>");  
+        var a = $("<button class='btn btn-outline-success'>");  
         a.addClass("celeb-btn");
         a.attr("data-name", myNewArr[i]);
         a.text(celebrities[i]);
